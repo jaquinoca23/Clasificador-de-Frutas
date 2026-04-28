@@ -1,0 +1,13 @@
+
+.venv/
+
+.venv-1/
+
+__pycache__/
+
+*.pyc
+
+modelos/*.h5
+
+dataset/
+

@@ -11,3 +11,5 @@ modelos/*.h5
 
 dataset/
 
+config.bat
+node_modules

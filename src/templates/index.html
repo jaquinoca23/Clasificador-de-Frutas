@@ -25,244 +25,164 @@
     --r:         12px;
     --r-lg:      20px;
   }
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-body);
-    min-height: 100vh;
-    overflow-x: hidden;
-    background-image:
-      radial-gradient(ellipse 80% 60% at 50% -20%, #1a2e1a 0%, transparent 70%),
-      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  }
-
-  .shell {
-    max-width: 1160px;
-    margin: 0 auto;
-    padding: 2rem 1.5rem 4rem;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-
-  header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border);
-  }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); min-height: 100vh; overflow-x: hidden;
+    background-image: radial-gradient(ellipse 80% 60% at 50% -20%, #1a2e1a 0%, transparent 70%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); }
+  .shell { max-width: 1160px; margin: 0 auto; padding: 2rem 1.5rem 4rem; display: flex; flex-direction: column; gap: 2rem; }
+  header { display: flex; align-items: flex-end; justify-content: space-between; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
   .logo { display: flex; align-items: center; gap: 1rem; }
-  .logo-icon {
-    width: 44px; height: 44px;
-    background: var(--accent);
-    border-radius: 50%;
-    display: grid; place-items: center;
-    font-size: 1.4rem;
-    box-shadow: 0 0 28px #7ede8a55;
-  }
-  .logo-text h1 {
-    font-family: var(--font-display);
-    font-size: 1.75rem; font-weight: 900; color: #fff;
-    letter-spacing: -0.02em; line-height: 1;
-  }
-  .logo-text span {
-    font-family: var(--font-mono); font-size: 0.7rem;
-    color: var(--accent); text-transform: uppercase; letter-spacing: 0.12em;
-  }
-  .status-pill {
-    display: flex; align-items: center; gap: 0.5rem;
-    background: var(--panel); border: 1px solid var(--border);
-    border-radius: 999px; padding: 0.35rem 1rem;
-    font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-dim);
-  }
-  .dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: var(--muted);
-    transition: background 0.4s, box-shadow 0.4s;
-  }
+  .logo-icon { width: 44px; height: 44px; background: var(--accent); border-radius: 50%; display: grid; place-items: center; font-size: 1.4rem; box-shadow: 0 0 28px #7ede8a55; }
+  .logo-text h1 { font-family: var(--font-display); font-size: 1.75rem; font-weight: 900; color: #fff; letter-spacing: -0.02em; line-height: 1; }
+  .logo-text span { font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.12em; }
+  .status-pill { display: flex; align-items: center; gap: 0.5rem; background: var(--panel); border: 1px solid var(--border); border-radius: 999px; padding: 0.35rem 1rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-dim); }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--muted); transition: background 0.4s, box-shadow 0.4s; }
   .dot.live { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
-
-  .main-grid {
-    display: grid;
-    grid-template-columns: 1fr 340px;
-    gap: 1.5rem;
-    align-items: start;
-  }
+  .main-grid { display: grid; grid-template-columns: 1fr 340px; gap: 1.5rem; align-items: start; }
   @media (max-width: 780px) { .main-grid { grid-template-columns: 1fr; } }
-
-  .cam-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--r-lg); overflow: hidden;
-    position: relative; aspect-ratio: 4/3;
-    display: flex; align-items: center; justify-content: center;
-  }
-
-  .cam-placeholder {
-    display: flex; flex-direction: column; align-items: center; gap: 1.2rem;
-    padding: 2rem; text-align: center; transition: opacity 0.4s;
-  }
+  .cam-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; position: relative; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; }
+  .cam-placeholder { display: flex; flex-direction: column; align-items: center; gap: 1.2rem; padding: 2rem; text-align: center; transition: opacity 0.4s; }
   .cam-placeholder.hidden { opacity: 0; pointer-events: none; }
   .cam-placeholder-icon { font-size: 3.5rem; filter: grayscale(0.5) opacity(0.5); }
   .cam-placeholder h2 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: #fff; }
   .cam-placeholder p { font-size: 0.85rem; color: var(--text-dim); max-width: 280px; line-height: 1.6; }
-
-  video {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    object-fit: cover; border-radius: var(--r-lg);
-    opacity: 0; transition: opacity 0.6s;
-    transform: scaleX(-1);
-  }
+  video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: var(--r-lg); opacity: 0; transition: opacity 0.6s; transform: scaleX(-1); }
   video.active { opacity: 1; }
-
-  .scan-line {
-    position: absolute; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0; top: 0;
-    animation: scan 2.4s linear infinite; pointer-events: none;
-  }
+  .scan-line { position: absolute; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0; top: 0; animation: scan 2.4s linear infinite; pointer-events: none; }
   .scan-line.visible { opacity: 0.7; }
   @keyframes scan { 0% { top: 0%; } 100% { top: 100%; } }
-
-  .corner {
-    position: absolute; width: 20px; height: 20px;
-    border-color: var(--accent); border-style: solid;
-    opacity: 0; transition: opacity 0.5s;
-  }
+  .corner { position: absolute; width: 20px; height: 20px; border-color: var(--accent); border-style: solid; opacity: 0; transition: opacity 0.5s; }
   .corner.visible { opacity: 0.6; }
   .corner.tl { top: 12px; left: 12px; border-width: 2px 0 0 2px; border-radius: 4px 0 0 0; }
   .corner.tr { top: 12px; right: 12px; border-width: 2px 2px 0 0; border-radius: 0 4px 0 0; }
   .corner.bl { bottom: 12px; left: 12px; border-width: 0 0 2px 2px; border-radius: 0 0 0 4px; }
   .corner.br { bottom: 12px; right: 12px; border-width: 0 2px 2px 0; border-radius: 0 0 4px 0; }
-
-  .fps-badge {
-    position: absolute; bottom: 12px; left: 12px;
-    font-family: var(--font-mono); font-size: 0.65rem;
-    color: var(--accent); background: #0008;
-    padding: 0.2rem 0.5rem; border-radius: 4px;
-    opacity: 0; transition: opacity 0.4s;
-  }
+  .fps-badge { position: absolute; bottom: 12px; left: 12px; font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent); background: #0008; padding: 0.2rem 0.5rem; border-radius: 4px; opacity: 0; transition: opacity 0.4s; }
   .fps-badge.visible { opacity: 1; }
-
-  .btn-cam {
-    position: absolute;
-    display: flex; align-items: center; gap: 0.6rem;
-    background: var(--accent); color: #0a0d0b;
-    font-family: var(--font-body); font-weight: 500; font-size: 0.95rem;
-    border: none; border-radius: 999px; padding: 0.75rem 1.8rem;
-    cursor: pointer; transition: transform 0.2s, box-shadow 0.2s, opacity 0.3s;
-    box-shadow: 0 4px 24px #7ede8a44; z-index: 2;
-  }
+  .btn-cam { position: absolute; display: flex; align-items: center; gap: 0.6rem; background: var(--accent); color: #0a0d0b; font-family: var(--font-body); font-weight: 500; font-size: 0.95rem; border: none; border-radius: 999px; padding: 0.75rem 1.8rem; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s, opacity 0.3s; box-shadow: 0 4px 24px #7ede8a44; z-index: 2; }
   .btn-cam:hover { transform: scale(1.04); box-shadow: 0 6px 32px #7ede8a66; }
   .btn-cam:active { transform: scale(0.97); }
   .btn-cam.hidden { opacity: 0; pointer-events: none; }
   .btn-cam svg { width: 18px; height: 18px; flex-shrink: 0; }
-
-  .btn-stop {
-    position: absolute; top: 14px; right: 14px;
-    background: #ffffff18; color: var(--text);
-    border: 1px solid #ffffff22; font-family: var(--font-mono);
-    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em;
-    border-radius: 999px; padding: 0.35rem 0.9rem; cursor: pointer;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.4s, background 0.2s; z-index: 3;
-  }
+  .btn-stop { position: absolute; top: 14px; right: 14px; background: #ffffff18; color: var(--text); border: 1px solid #ffffff22; font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; border-radius: 999px; padding: 0.35rem 0.9rem; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity 0.4s, background 0.2s; z-index: 3; }
   .btn-stop.visible { opacity: 1; pointer-events: auto; }
   .btn-stop:hover { background: #ffffff28; }
-
   .info-panel { display: flex; flex-direction: column; gap: 1rem; }
-
-  .result-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: var(--r-lg); padding: 1.5rem; transition: border-color 0.4s;
-  }
+  .result-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.5rem; transition: border-color 0.4s; }
   .result-card.active { border-color: #3a5a3a; }
-
-  .result-label {
-    font-family: var(--font-mono); font-size: 0.65rem;
-    text-transform: uppercase; letter-spacing: 0.15em;
-    color: var(--text-dim); margin-bottom: 0.8rem;
-  }
-
+  .result-label { font-family: var(--font-mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-dim); margin-bottom: 0.8rem; }
   .result-main { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
-  .result-emoji {
-    font-size: 3rem; line-height: 1;
-    transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
-  }
+  .result-emoji { font-size: 3rem; line-height: 1; transition: transform 0.3s cubic-bezier(.34,1.56,.64,1); }
   .result-emoji.pop { transform: scale(1.35); }
   .result-name { flex: 1; }
-  .result-name h3 {
-    font-family: var(--font-display); font-style: italic;
-    font-size: 2rem; font-weight: 700; color: #fff;
-    line-height: 1.1; transition: opacity 0.25s;
-  }
+  .result-name h3 { font-family: var(--font-display); font-style: italic; font-size: 2rem; font-weight: 700; color: #fff; line-height: 1.1; }
   .result-name .idle { font-family: var(--font-body); font-style: normal; font-size: 0.85rem; color: var(--text-dim); }
-
   .conf-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
   .conf-row span:first-child { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; }
   .conf-pct { font-family: var(--font-mono); font-size: 1rem; font-weight: 500; color: var(--accent); }
-
   .bar-track { background: var(--panel); border-radius: 999px; height: 6px; overflow: hidden; border: 1px solid var(--border); }
-  .bar-fill {
-    height: 100%; border-radius: 999px;
-    background: linear-gradient(90deg, #4aad5a, var(--accent2));
-    width: 0%; transition: width 0.5s cubic-bezier(.4,0,.2,1), background 0.4s;
-    box-shadow: 0 0 8px #7ede8a55;
-  }
+  .bar-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #4aad5a, var(--accent2)); width: 0%; transition: width 0.5s cubic-bezier(.4,0,.2,1), background 0.4s; box-shadow: 0 0 8px #7ede8a55; }
   .bar-fill.low { background: linear-gradient(90deg, #ad6a4a, var(--warn)); }
+
+  /* ── Feedback box ── */
+  .feedback-box {
+    display: none;
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    animation: slideIn 0.3s ease;
+  }
+  .feedback-box.visible { display: block; }
+  .feedback-question {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.7rem;
+  }
+  .feedback-detected {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+  }
+  .feedback-btns { display: flex; gap: 0.6rem; margin-bottom: 0; }
+  .btn-feedback {
+    flex: 1; padding: 0.55rem 0.5rem;
+    border: none; border-radius: var(--r);
+    font-family: var(--font-body); font-size: 0.85rem; font-weight: 500;
+    cursor: pointer; transition: transform 0.15s, opacity 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 0.4rem;
+  }
+  .btn-feedback:hover { transform: scale(1.03); }
+  .btn-feedback:active { transform: scale(0.97); }
+  .btn-yes { background: #1a3a1a; color: var(--accent); border: 1px solid #3a6a3a; }
+  .btn-no  { background: #3a1a1a; color: #f09090;       border: 1px solid #6a3a3a; }
+  .btn-feedback:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  /* Selector de corrección */
+  .correction-box {
+    display: none;
+    margin-top: 0.8rem;
+    animation: slideIn 0.25s ease;
+  }
+  .correction-box.visible { display: block; }
+  .correction-box label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; display: block; margin-bottom: 0.4rem; }
+  .correction-select {
+    width: 100%; background: var(--surface); color: var(--text);
+    border: 1px solid var(--border); border-radius: var(--r);
+    padding: 0.5rem 0.7rem; font-family: var(--font-body); font-size: 0.85rem;
+    margin-bottom: 0.6rem; cursor: pointer;
+  }
+  .correction-select:focus { outline: none; border-color: var(--accent); }
+  .btn-send-correction {
+    width: 100%; padding: 0.55rem;
+    background: var(--accent); color: #0a0d0b;
+    border: none; border-radius: var(--r);
+    font-family: var(--font-body); font-size: 0.85rem; font-weight: 500;
+    cursor: pointer; transition: transform 0.15s;
+  }
+  .btn-send-correction:hover { transform: scale(1.02); }
+
+  /* Feedback confirmación */
+  .feedback-confirm {
+    display: none;
+    margin-top: 0.6rem;
+    padding: 0.5rem 0.8rem;
+    border-radius: var(--r);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-align: center;
+    animation: slideIn 0.3s ease;
+  }
+  .feedback-confirm.ok   { display: block; background: #1a3a1a; color: var(--accent); border: 1px solid #3a6a3a; }
+  .feedback-confirm.fail { display: block; background: #3a1a1a; color: #f09090;       border: 1px solid #6a3a3a; }
 
   .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
   .stat-cell { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 0.9rem 1rem; }
   .stat-cell .s-label { font-family: var(--font-mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-dim); margin-bottom: 0.3rem; }
   .stat-cell .s-val { font-family: var(--font-mono); font-size: 1.1rem; color: var(--accent); font-weight: 500; }
-
   .history-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.2rem 1.5rem; }
   .history-card .result-label { margin-bottom: 0.6rem; }
-  .history-list {
-    list-style: none; display: flex; flex-direction: column; gap: 0.4rem;
-    max-height: 160px; overflow-y: auto;
-    scrollbar-width: thin; scrollbar-color: var(--border) transparent;
-  }
-  .history-item {
-    display: flex; align-items: center; gap: 0.6rem;
-    font-size: 0.8rem; color: var(--text-dim);
-    animation: slideIn 0.3s ease; padding: 0.25rem 0;
-    border-bottom: 1px solid var(--border);
-  }
+  .history-list { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; max-height: 160px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .history-item { display: flex; align-items: center; gap: 0.6rem; font-size: 0.8rem; color: var(--text-dim); animation: slideIn 0.3s ease; padding: 0.25rem 0; border-bottom: 1px solid var(--border); }
   .history-item:last-child { border-bottom: none; }
   .history-item .hi-emoji { font-size: 1rem; }
   .history-item .hi-name { flex: 1; color: var(--text); }
   .history-item .hi-conf { font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent); }
   .history-item .hi-time { font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); }
   @keyframes slideIn { from { opacity: 0; transform: translateX(8px); } to { opacity: 1; transform: translateX(0); } }
-
-  footer {
-    border-top: 1px solid var(--border); padding-top: 1.2rem;
-    display: flex; justify-content: space-between; align-items: center;
-    font-size: 0.72rem; color: var(--muted); font-family: var(--font-mono);
-  }
-  footer a { color: var(--text-dim); text-decoration: none; }
-  footer a:hover { color: var(--accent); }
-
-  .toast {
-    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(80px);
-    background: #2a1010; border: 1px solid #6a2020;
-    color: #f09090; border-radius: 999px;
-    padding: 0.6rem 1.4rem;
-    font-family: var(--font-mono); font-size: 0.78rem;
-    transition: transform 0.4s, opacity 0.4s;
-    opacity: 0; pointer-events: none; z-index: 100;
-  }
+  footer { border-top: 1px solid var(--border); padding-top: 1.2rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.72rem; color: var(--muted); font-family: var(--font-mono); }
+  .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(80px); background: #2a1010; border: 1px solid #6a2020; color: #f09090; border-radius: 999px; padding: 0.6rem 1.4rem; font-family: var(--font-mono); font-size: 0.78rem; transition: transform 0.4s, opacity 0.4s; opacity: 0; pointer-events: none; z-index: 100; }
   .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 </style>
 </head>
 <body>
 <div class="shell">
-
   <header>
     <div class="logo">
       <div class="logo-icon">🍃</div>
@@ -278,23 +198,21 @@
   </header>
 
   <div class="main-grid">
-
     <div class="cam-card" id="camCard">
       <div class="cam-placeholder" id="camPlaceholder">
         <div class="cam-placeholder-icon">📷</div>
+        <h2> </h2>
+        <h2> </h2>
         <h2>Enfoca una fruta</h2>
         <p>Activa la cámara para que la IA identifique frutas en tiempo real con alta precisión.</p>
       </div>
-
       <video id="video" autoplay playsinline muted></video>
-
       <div class="scan-line" id="scanLine"></div>
       <div class="corner tl" id="c1"></div>
       <div class="corner tr" id="c2"></div>
       <div class="corner bl" id="c3"></div>
       <div class="corner br" id="c4"></div>
       <div class="fps-badge" id="fpsBadge">-- fps</div>
-
       <button class="btn-cam" id="btnOpen">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
@@ -306,7 +224,6 @@
     </div>
 
     <div class="info-panel">
-
       <div class="result-card" id="resultCard">
         <div class="result-label">Detección actual</div>
         <div class="result-main">
@@ -321,6 +238,26 @@
         </div>
         <div class="bar-track">
           <div class="bar-fill" id="barFill"></div>
+        </div>
+
+        <!-- ✅ Feedback box -->
+        <div class="feedback-box" id="feedbackBox">
+          <div class="feedback-question">¿La IA acertó?</div>
+          <div class="feedback-detected" id="feedbackDetected">—</div>
+          <div class="feedback-btns">
+            <button class="btn-feedback btn-yes" id="btnYes">👍 Correcto</button>
+            <button class="btn-feedback btn-no"  id="btnNo">👎 Incorrecto</button>
+          </div>
+
+          <!-- Selector de corrección (aparece si dice No) -->
+          <div class="correction-box" id="correctionBox">
+            <label>¿Cuál es la fruta correcta?</label>
+            <select class="correction-select" id="correctionSelect"></select>
+            <button class="btn-send-correction" id="btnSendCorrection">✔ Enviar corrección</button>
+          </div>
+
+          <!-- Confirmación -->
+          <div class="feedback-confirm" id="feedbackConfirm"></div>
         </div>
       </div>
 
@@ -338,8 +275,8 @@
           <div class="s-val" id="statTop">—</div>
         </div>
         <div class="stat-cell">
-          <div class="s-label">Intervalo</div>
-          <div class="s-val" id="statInterval">600ms</div>
+          <div class="s-label">Feedbacks guardados</div>
+          <div class="s-val" id="statFeedback">0</div>
         </div>
       </div>
 
@@ -351,7 +288,6 @@
           </li>
         </ul>
       </div>
-
     </div>
   </div>
 
@@ -359,54 +295,82 @@
     <span>FruitLens v1.0 · TensorFlow/Keras + Flask</span>
     <span>Modelo: <span id="footerModel">clasificador_v1.h5</span></span>
   </footer>
-
 </div>
 
 <div class="toast" id="toast"></div>
 <canvas id="canvas" style="display:none"></canvas>
 
 <script>
-/* ── Config ── */
 const API_URL          = "/predict";
+const FEEDBACK_URL     = "/feedback";
 const PREDICT_INTERVAL = 600;
-const MIN_CONFIDENCE   = 0.92;   // ✅ umbral alto: solo muestra si está 92%+ seguro
+const MIN_CONFIDENCE   = 0.92;
 const MAX_HISTORY      = 20;
 
-/* ── State ── */
-let stream      = null;
-let predTimer   = null;
-let totalPreds  = 0;
-let sumConf     = 0;
-let freqMap     = {};
-let fpsCounter  = 0;
-let lastFpsTime = performance.now();
-let isRunning   = false;
-let lastClass   = null;
+const CLASES = [
+  "Apple Braeburn","Apple Granny Smith","Apricot","Avocado",
+  "Banana","Blueberry","Cactus fruit","Cantaloupe",
+  "Cherry","Clementine","Corn","Cucumber Ripe",
+  "Grape Blue","Kiwi","Lemon","Limes",
+  "Mango","Onion White","Orange","Papaya",
+  "Passion Fruit","Peach","Pear","Pepper Green",
+  "Pepper Red","Pineapple","Plum","Pomegranate",
+  "Potato Red","Raspberry","Strawberry","Tomato","Watermelon"
+];
 
-/* ── DOM refs ── */
-const video          = document.getElementById("video");
-const canvas         = document.getElementById("canvas");
-const ctx            = canvas.getContext("2d");
-const btnOpen        = document.getElementById("btnOpen");
-const btnStop        = document.getElementById("btnStop");
-const camPlaceholder = document.getElementById("camPlaceholder");
-const statusDot      = document.getElementById("statusDot");
-const statusText     = document.getElementById("statusText");
-const scanLine       = document.getElementById("scanLine");
-const fpsBadge       = document.getElementById("fpsBadge");
-const resEmoji       = document.getElementById("resEmoji");
-const resName        = document.getElementById("resName");
-const resPct         = document.getElementById("resPct");
-const barFill        = document.getElementById("barFill");
-const resultCard     = document.getElementById("resultCard");
-const historyList    = document.getElementById("historyList");
-const statPreds      = document.getElementById("statPreds");
-const statAvg        = document.getElementById("statAvg");
-const statTop        = document.getElementById("statTop");
-const toastEl        = document.getElementById("toast");
-const corners        = ["c1","c2","c3","c4"].map(id => document.getElementById(id));
+let stream        = null;
+let predTimer     = null;
+let totalPreds    = 0;
+let sumConf       = 0;
+let freqMap       = {};
+let fpsCounter    = 0;
+let lastFpsTime   = performance.now();
+let isRunning     = false;
+let lastClass     = null;
+let lastFrame     = null;   // último frame capturado (base64)
+let lastData      = null;   // última predicción
+let totalFeedback = 0;
 
-/* ── Toast ── */
+const video           = document.getElementById("video");
+const canvas          = document.getElementById("canvas");
+const ctx             = canvas.getContext("2d");
+const btnOpen         = document.getElementById("btnOpen");
+const btnStop         = document.getElementById("btnStop");
+const camPlaceholder  = document.getElementById("camPlaceholder");
+const statusDot       = document.getElementById("statusDot");
+const statusText      = document.getElementById("statusText");
+const scanLine        = document.getElementById("scanLine");
+const fpsBadge        = document.getElementById("fpsBadge");
+const resEmoji        = document.getElementById("resEmoji");
+const resName         = document.getElementById("resName");
+const resPct          = document.getElementById("resPct");
+const barFill         = document.getElementById("barFill");
+const resultCard      = document.getElementById("resultCard");
+const historyList     = document.getElementById("historyList");
+const statPreds       = document.getElementById("statPreds");
+const statAvg         = document.getElementById("statAvg");
+const statTop         = document.getElementById("statTop");
+const statFeedback    = document.getElementById("statFeedback");
+const toastEl         = document.getElementById("toast");
+const corners         = ["c1","c2","c3","c4"].map(id => document.getElementById(id));
+
+// Feedback elements
+const feedbackBox        = document.getElementById("feedbackBox");
+const feedbackDetected   = document.getElementById("feedbackDetected");
+const btnYes             = document.getElementById("btnYes");
+const btnNo              = document.getElementById("btnNo");
+const correctionBox      = document.getElementById("correctionBox");
+const correctionSelect   = document.getElementById("correctionSelect");
+const btnSendCorrection  = document.getElementById("btnSendCorrection");
+const feedbackConfirm    = document.getElementById("feedbackConfirm");
+
+// Poblar el select con todas las clases
+CLASES.forEach(c => {
+  const opt = document.createElement("option");
+  opt.value = c; opt.textContent = c;
+  correctionSelect.appendChild(opt);
+});
+
 let toastTimeout;
 function showToast(msg) {
   toastEl.textContent = msg;
@@ -415,7 +379,6 @@ function showToast(msg) {
   toastTimeout = setTimeout(() => toastEl.classList.remove("show"), 3500);
 }
 
-/* ── Open camera ── */
 btnOpen.addEventListener("click", async () => {
   try {
     stream = await navigator.mediaDevices.getUserMedia({
@@ -430,19 +393,15 @@ btnOpen.addEventListener("click", async () => {
   }
 });
 
-/* ── Stop camera ── */
 btnStop.addEventListener("click", stopAll);
 
 function stopAll() {
-  clearInterval(predTimer);
-  predTimer = null;
-  isRunning = false;
+  clearInterval(predTimer); predTimer = null; isRunning = false;
   if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
   video.srcObject = null;
   stopUI();
 }
 
-/* ── UI transitions ── */
 function startUI() {
   isRunning = true;
   video.classList.add("active");
@@ -473,40 +432,36 @@ function stopUI() {
   resEmoji.textContent = "🍽️";
   resPct.textContent = "—";
   barFill.style.width = "0%";
+  hideFeedback();
   lastClass = null;
 }
 
-/* ── FPS counter ── */
 function updateFPS() {
   fpsCounter++;
   const now = performance.now();
   if (now - lastFpsTime >= 1000) {
     const fps = Math.round(fpsCounter * 1000 / (now - lastFpsTime));
     fpsBadge.textContent = `${fps} fps · ${PREDICT_INTERVAL}ms`;
-    fpsCounter = 0;
-    lastFpsTime = now;
+    fpsCounter = 0; lastFpsTime = now;
   }
 }
 
-/* ── Capture frame ── */
 function captureFrame() {
   if (!video.videoWidth) return null;
-  canvas.width  = video.videoWidth;
-  canvas.height = video.videoHeight;
+  canvas.width = video.videoWidth; canvas.height = video.videoHeight;
   ctx.drawImage(video, 0, 0);
   updateFPS();
   return canvas.toDataURL("image/jpeg", 0.75).split(",")[1];
 }
 
-/* ── Predict ── */
 async function captureAndPredict() {
   if (!isRunning) return;
   const frameB64 = captureFrame();
   if (!frameB64) return;
+  lastFrame = frameB64;
   try {
     const resp = await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ frame: frameB64 }),
     });
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
@@ -518,53 +473,140 @@ async function captureAndPredict() {
   }
 }
 
-/* ── Update UI ── */
 function updateResult(data) {
   const { clase, emoji, confianza, porcentaje } = data;
   const pct   = confianza * 100;
   const isNew = clase !== lastClass;
 
   if (confianza >= MIN_CONFIDENCE) {
-    // ✅ Confianza suficiente — mostrar fruta detectada
     lastClass = clase;
+    lastData  = data;
     resEmoji.textContent = emoji;
-    resName.innerHTML = `<span>${clase}</span>`;
-    resPct.textContent = porcentaje;
+    resName.innerHTML    = `<span>${clase}</span>`;
+    resPct.textContent   = porcentaje;
     barFill.classList.remove("low");
-    barFill.style.width = `${pct}%`;
+    barFill.style.width  = `${pct}%`;
 
     if (isNew) {
       resEmoji.classList.add("pop");
       setTimeout(() => resEmoji.classList.remove("pop"), 350);
       addHistory(data);
+      freqMap[clase] = (freqMap[clase] || 0) + 1;
+      // ✅ Mostrar feedback y PAUSAR predicciones hasta que el usuario responda
+      showFeedback(clase);
+      pausarPredicciones();
     }
   } else {
-    // ✅ Confianza baja — mostrar "Sin fruta detectada"
     lastClass = null;
+    lastData  = null;
     resEmoji.textContent = "🔍";
     resName.innerHTML = '<span style="color:var(--text-dim);font-style:normal;font-size:1rem;">Sin fruta detectada</span>';
     resPct.textContent = porcentaje;
     barFill.classList.add("low");
     barFill.style.width = `${pct}%`;
+    hideFeedback();
   }
 
-  // Estadísticas (siempre se actualizan)
   totalPreds++;
   sumConf += confianza;
-  if (confianza >= MIN_CONFIDENCE) freqMap[clase] = (freqMap[clase] || 0) + 1;
-
   statPreds.textContent = totalPreds;
   statAvg.textContent   = (sumConf / totalPreds * 100).toFixed(1) + "%";
-
   const topEntry = Object.entries(freqMap).sort((a,b) => b[1]-a[1])[0];
   statTop.textContent = topEntry ? topEntry[0] : "—";
 }
 
-/* ── Historial ── */
+/* ── Feedback ── */
+function showFeedback(clase) {
+  feedbackDetected.textContent = clase;
+  feedbackBox.classList.add("visible");
+  correctionBox.classList.remove("visible");
+  feedbackConfirm.className = "feedback-confirm";
+  feedbackConfirm.textContent = "";
+  btnYes.disabled = false;
+  btnNo.disabled  = false;
+  correctionSelect.value = clase;
+}
+
+function hideFeedback() {
+  feedbackBox.classList.remove("visible");
+  correctionBox.classList.remove("visible");
+  feedbackConfirm.className = "feedback-confirm";
+}
+
+// ✅ Pausa las predicciones mientras el usuario elige
+function pausarPredicciones() {
+  if (predTimer) {
+    clearInterval(predTimer);
+    predTimer = null;
+  }
+}
+
+// ✅ Reanuda las predicciones después de dar feedback
+function reanudarPredicciones() {
+  if (isRunning && !predTimer) {
+    lastClass = null; // fuerza mostrar feedback en la próxima detección
+    predTimer = setInterval(captureAndPredict, PREDICT_INTERVAL);
+  }
+}
+
+async function sendFeedback(correcto, correccion = null) {
+  if (!lastFrame || !lastData) return;
+  btnYes.disabled = true;
+  btnNo.disabled  = true;
+
+  try {
+    const resp = await fetch(FEEDBACK_URL, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        frame:      lastFrame,
+        prediccion: lastData.clase,
+        correcto:   correcto,
+        correccion: correccion || lastData.clase,
+      }),
+    });
+    const result = await resp.json();
+    if (result.ok) {
+      totalFeedback++;
+      statFeedback.textContent = totalFeedback;
+      feedbackConfirm.className = "feedback-confirm ok";
+      feedbackConfirm.textContent = correcto
+        ? `✅ ¡Guardado! La IA aprendió que era ${lastData.clase}`
+        : `✅ ¡Corregido! Guardado como "${correccion}"`;
+      correctionBox.classList.remove("visible");
+      // ✅ Reanudar predicciones después de 2 segundos
+      setTimeout(() => {
+        hideFeedback();
+        reanudarPredicciones();
+      }, 2000);
+    } else {
+      throw new Error(result.error);
+    }
+  } catch (err) {
+    feedbackConfirm.className = "feedback-confirm fail";
+    feedbackConfirm.textContent = "⚠️ Error al guardar — intenta de nuevo";
+    btnYes.disabled = false;
+    btnNo.disabled  = false;
+  }
+}
+
+// 👍 Correcto
+btnYes.addEventListener("click", () => sendFeedback(true));
+
+// 👎 Incorrecto → mostrar selector (ya está pausado)
+btnNo.addEventListener("click", () => {
+  correctionBox.classList.add("visible");
+  feedbackConfirm.className = "feedback-confirm";
+});
+
+// Enviar corrección
+btnSendCorrection.addEventListener("click", () => {
+  const correccion = correctionSelect.value;
+  if (correccion) sendFeedback(false, correccion);
+});
+
 function addHistory(data) {
   const firstItem = historyList.querySelector("li");
   if (firstItem && firstItem.style.border === "none") historyList.innerHTML = "";
-
   const now     = new Date();
   const timeStr = now.toLocaleTimeString("es-PE", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
   const li      = document.createElement("li");
@@ -579,13 +621,12 @@ function addHistory(data) {
   while (historyList.children.length > MAX_HISTORY) historyList.removeChild(historyList.lastChild);
 }
 
-/* ── Health check ── */
 (async function checkHealth() {
   try {
     const r = await fetch("/health");
     const d = await r.json();
     if (!d.modelo_cargado) showToast("⚠️ Modelo no encontrado — verifica la ruta en app.py");
-  } catch { /* servidor aún no disponible */ }
+  } catch { }
 })();
 </script>
 </body>

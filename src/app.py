@@ -3,15 +3,16 @@ app.py — Backend Flask para Clasificador de Frutas en Tiempo Real
 """
 
 import io
+import os
 import base64
 import numpy as np
+from datetime import datetime
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 
 model = None
-MODEL_PATH = "../modelos/clasificador_completo.h5"
+MODEL_PATH = "../modelos/clasificador_v1.h5"
 
-# ✅ 33 clases en el orden EXACTO del clases.txt
 CLASES = [
     "Apple Braeburn", "Apple Granny Smith", "Apricot", "Avocado",
     "Banana", "Blueberry", "Cactus fruit", "Cantaloupe",
@@ -30,19 +31,6 @@ EMOJIS = [
     "🍒", "🍊", "🌽", "🥒",
     "🍇", "🥝", "🍋", "🍋",
     "🥭", "🧅", "🍊", "🍈",
-    "�passion_fruit", "🍑", "🍐", "🫑",
-    "🌶️", "🍍", "🍑", "🍎",
-    "🥔", "🫐", "🍓", "🍅",
-    "🍉"
-]
-
-# Emojis corregidos (sin nombres inválidos)
-EMOJIS = [
-    "🍎", "🍏", "🍑", "🥑",
-    "🍌", "🫐", "🌵", "🍈",
-    "🍒", "🍊", "🌽", "🥒",
-    "🍇", "🥝", "🍋", "🍋",
-    "🥭", "🧅", "🍊", "🍈",
     "🍈", "🍑", "🍐", "🫑",
     "🌶️", "🍍", "🍑", "🍎",
     "🥔", "🫐", "🍓", "🍅",
@@ -50,6 +38,10 @@ EMOJIS = [
 ]
 
 IMG_SIZE = (100, 100)
+UMBRAL   = 0.99
+
+# Carpeta donde se guardan las imágenes de feedback
+FEEDBACK_DIR = "../dataset/feedback"
 
 
 def load_model():
@@ -77,21 +69,29 @@ def preprocess_image(image_bytes: bytes) -> np.ndarray:
 def predict(image_bytes: bytes) -> dict:
     mdl = load_model()
     if mdl is None:
-        return {"clase": "Modelo no cargado", "emoji": "❌", "confianza": 0.0, "porcentaje": "0.0%", "indice": -1}
+        return {
+            "clase": "Modelo no cargado", "emoji": "❌",
+            "confianza": 0.0, "porcentaje": "0.0%",
+            "indice": -1, "reconocida": False,
+        }
 
-    tensor = preprocess_image(image_bytes)
-    preds  = mdl.predict(tensor, verbose=0)[0]
-    idx    = int(np.argmax(preds))
+    tensor    = preprocess_image(image_bytes)
+    preds     = mdl.predict(tensor, verbose=0)[0]
+    idx       = int(np.argmax(preds))
     confianza = round(float(preds[idx]), 4)
+    reconocida = confianza >= UMBRAL
+    nombre = CLASES[idx] if idx < len(CLASES) else f"Clase {idx}"
+    emoji  = EMOJIS[idx] if idx < len(EMOJIS) else "🍽️"
 
-    print(f"  DEBUG: {CLASES[idx] if idx < len(CLASES) else idx} ({confianza*100:.1f}%)")
+    print(f"  DEBUG: {nombre} ({confianza*100:.1f}%) {'✅' if reconocida else '❌'}")
 
     return {
-        "clase":      CLASES[idx] if idx < len(CLASES) else f"Clase {idx}",
-        "emoji":      EMOJIS[idx] if idx < len(EMOJIS) else "🍽️",
+        "clase":      nombre,
+        "emoji":      emoji,
         "confianza":  confianza,
         "porcentaje": f"{confianza * 100:.1f}%",
         "indice":     idx,
+        "reconocida": reconocida,
     }
 
 
@@ -128,14 +128,81 @@ def predict_endpoint():
         return jsonify({"error": str(exc)}), 500
 
 
+@app.route("/feedback", methods=["POST"])
+def feedback_endpoint():
+    """
+    Recibe el feedback del usuario (👍 correcto / 👎 incorrecto).
+    Guarda la imagen en dataset/feedback/<etiqueta_correcta>/
+    Body JSON:
+      {
+        "frame":          "<base64>",
+        "prediccion":     "Banana",
+        "correcto":       true/false,
+        "correccion":     "Kiwi"   (solo si correcto=false)
+      }
+    """
+    try:
+        data       = request.get_json(force=True)
+        b64        = data.get("frame", "")
+        prediccion = data.get("prediccion", "unknown")
+        correcto   = data.get("correcto", True)
+        correccion = data.get("correccion", prediccion)
+
+        # Etiqueta real = predicción si fue correcto, correccion si no
+        etiqueta = prediccion if correcto else correccion
+
+        # Decodificar imagen
+        if "," in b64:
+            b64 = b64.split(",", 1)[1]
+        image_bytes = base64.b64decode(b64)
+
+        # Crear carpeta destino
+        carpeta = os.path.join(FEEDBACK_DIR, etiqueta)
+        os.makedirs(carpeta, exist_ok=True)
+
+        # Guardar imagen con timestamp
+        ts       = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+        filename = f"fb_{ts}.jpg"
+        filepath = os.path.join(carpeta, filename)
+
+        with open(filepath, "wb") as f:
+            f.write(image_bytes)
+
+        tipo = "✅ CORRECTO" if correcto else f"❌ CORREGIDO → {correccion}"
+        print(f"  FEEDBACK {tipo}: guardado en {filepath}")
+
+        return jsonify({
+            "ok":      True,
+            "archivo": filepath,
+            "etiqueta": etiqueta,
+        })
+
+    except Exception as exc:
+        print(f"ERROR en /feedback: {exc}")
+        return jsonify({"error": str(exc)}), 500
+
+
+@app.route("/feedback/stats", methods=["GET"])
+def feedback_stats():
+    """Devuelve cuántas imágenes de feedback hay por clase."""
+    stats = {}
+    if os.path.exists(FEEDBACK_DIR):
+        for clase in os.listdir(FEEDBACK_DIR):
+            ruta = os.path.join(FEEDBACK_DIR, clase)
+            if os.path.isdir(ruta):
+                stats[clase] = len(os.listdir(ruta))
+    return jsonify({"feedback": stats, "total": sum(stats.values())})
+
+
 @app.route("/health")
 def health():
     mdl = load_model()
     return jsonify({
-        "status": "ok",
+        "status":         "ok",
         "modelo_cargado": mdl is not None,
-        "clases": CLASES,
-        "num_clases": len(CLASES),
+        "clases":         CLASES,
+        "num_clases":     len(CLASES),
+        "umbral":         UMBRAL,
     })
 
 
